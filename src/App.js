@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import data from "./models/books.json";
 import Home from "./pages/Home";
 import BookCase from "./pages/BookCase";
 import Header from "./components/header/Header";
+import Contact from "./pages/Contact";
 
 // this is a Button Component
 function Button({ label, buttonClassName }) {
@@ -21,7 +22,18 @@ function SuccessButton() {
 }
 
 function App() {
-  const [books, setBooks] = useState(data.books);
+  const [books, setBooks] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const handleBookSearch = async () => {
+    const results = await fetch(
+      `https://www.googleapis.com/books/v1/volumes?q=${searchKeyword}&filter=paid-ebooks&print-type=books&projection=lite`
+    ).then((res) => res.json());
+
+    if (!results.error) {
+      setBooks(results.items);
+    }
+  };
 
   const addBook = (titleParameter) => {
     console.log(titleParameter);
@@ -30,11 +42,23 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home books={books} addBook={addBook} />,
+      element: (
+        <Home
+          books={books}
+          addBook={addBook}
+          searchValue={searchKeyword}
+          setSearchValue={setSearchKeyword}
+          searchBook={handleBookSearch}
+        />
+      ),
     },
     {
       path: "/bookcase",
       element: <BookCase />,
+    },
+    {
+      path: "/contact",
+      element: <Contact />,
     },
   ]);
 

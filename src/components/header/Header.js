@@ -6,6 +6,7 @@ function Header() {
       <nav>
         <Link to="/">Home</Link>
         <Link to="/bookcase">My Bookcase Library</Link>
+        <Link to="/contact">Contact</Link>
       </nav>
     </header>
   );

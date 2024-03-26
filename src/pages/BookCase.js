@@ -1,5 +1,12 @@
+import Header from "../components/header/Header";
+
 function BookCase() {
-  return <div>Book Case</div>;
+  return (
+    <div>
+      <Header />
+      Book Case
+    </div>
+  );
 }
 
 export default BookCase;
